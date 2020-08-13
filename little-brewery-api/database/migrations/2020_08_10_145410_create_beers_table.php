@@ -15,7 +15,17 @@ class CreateBeersTable extends Migration
     {
         Schema::create('beers', function (Blueprint $table) {
             $table->id();
+            $table->string('beername');
+            $table->unsignedBigInteger('breweryid');
+            $table->string('flavor');
+            $table->string('color');
+            $table->string('packaging');
+            $table->string('image')->default(null);
+            $table->double('price');
+            $table->integer('quantity');
             $table->timestamps();
+
+            $table->foreign('breweryid')->references('id')->on('breweries');
         });
     }
 
@@ -26,6 +36,9 @@ class CreateBeersTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('beers');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        
     }
 }
