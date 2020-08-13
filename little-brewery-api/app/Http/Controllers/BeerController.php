@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Beer;
 
 class BeerController extends Controller
 {
@@ -54,6 +55,17 @@ class BeerController extends Controller
             return response()->json([
                 'status' => $status,
                 'message' => $status ? 'Beer Updated!' : 'Error Updating Beer'
+            ]);
+        }
+
+        public function updateQuantity(Request $request, Beer $beer)
+        {
+            $beer->quantity = $beer->quantity + $request->get('quantity');
+            $status = $beer->save();
+
+            return response()->json([
+                'status' => $status,
+                'message' => $status ? 'Quantity Added!' : 'Error Adding Product Quantity'
             ]);
         }
 

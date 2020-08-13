@@ -28,7 +28,7 @@ namespace App\Http\Controllers;
         public function store(Request $request)
         {
             $order = Order::create([
-                'beer_id' => $request->beer_id,
+                'beerid' => $request->beer_id,
                 'merchantid' => Auth::id(),
                 'breweryid' => $request->breweryid,
                 'quantity' => $request->quantity,
@@ -67,3 +67,5 @@ namespace App\Http\Controllers;
                 'message' => $status ? 'Order Deleted!' : 'Error Deleting Order'
             ]);
         }
+
+    }
