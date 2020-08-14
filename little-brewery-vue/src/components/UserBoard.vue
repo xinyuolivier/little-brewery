@@ -9,16 +9,16 @@
                         <br>
                         <div class="row">
                             <div class="col-md-4 product-box" v-for="(order,index) in orders" :key="index">
-                                <img :src="order.product.image" :alt="order.product.name">
-                                <h5><span v-html="order.product.name"></span><br>
-                                    <span class="small-text text-muted">$ {{order.product.price}}</span>
+                                <img :src="order.beer.image" :alt="order.beer.beername">
+                                <h5><span v-html="order.beer.beername"></span><br>
+                                    <span class="small-text text-muted">$ {{order.beer.price}}</span>
                                 </h5>
                                 <hr>
                                 <span class="small-text text-muted">Quantity: {{order.quantity}}
-                                    <span class="float-right">{{order.is_delivered == 1? "shipped!" : "not shipped"}}</span>
+                                    <span class="float-right">{{order.delivered == 1? "shipped!" : "not shipped"}}</span>
                                 </span>
                                 <br><br>
-                                <p><strong>Delivery address:</strong> <br>{{order.address}}</p>
+                                <p><strong>Delivery address:</strong> <br>{{user.address}}</p>
                             </div>
                         </div>
                     </div>
@@ -43,13 +43,6 @@
             }
         },
         beforeMount() {
-            this.user = JSON.parse(localStorage.getItem('bigStore.user'))
-
-            axios.defaults.headers.common['Content-Type'] = 'application/json'
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('bigStore.jwt')
-
-            axios.get(`api/users/${this.user.id}/orders`)
-                 .then(response => this.orders = response.data)
         }
     }
 </script>

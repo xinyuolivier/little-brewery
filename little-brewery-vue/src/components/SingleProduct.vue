@@ -18,6 +18,9 @@
 </template>
 
 <script>
+
+import {getBeerById} from '@/api/api';
+
 export default {
     data(){
         return {
@@ -25,8 +28,8 @@ export default {
         }
     },
     beforeMount(){
-        let url = `/api/products/${this.$route.params.id}`
-        axios.get(url).then(response => this.product = response.data)      
+        let beerId = `${this.$route.params.id}`
+        getBeerById(beerId).then(response => this.product = response)      
     }
 }
 </script>

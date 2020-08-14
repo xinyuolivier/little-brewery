@@ -106,13 +106,10 @@
             },
             uploadFile(event) {
                 if (this.attachment != null) {
-                    var formData = new FormData();
-                    formData.append("image", this.attachment)
-                    let headers = {'Content-Type': 'multipart/form-data'}
-                    axios.post("/api/upload-file", formData, {headers}).then(response => {
-                        this.product.image = response.data
-                        this.$emit('close', this.product)
-                    })
+                    
+                    console.log('post to product');
+                    console.log(event);
+                    
                 } else {
                     this.$emit('close', this.product)
                 }

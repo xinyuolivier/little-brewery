@@ -1,30 +1,37 @@
-import { fetchReq } from "./fetch"; //引用fetch.js
+import { fetchReq } from "./fetch"; 
 const API_URL = "http://localhost:8000/api";
+const TOKEN = '74taDYu8veBqPLkuwSFQIoo6iYiT7LdzJ3QPxgK0b6nHMmAPSkDlQaUgnoolq00sIlFjhQ3224SDhnFhTqnfAiq0w1ae5qqioeFq';
 
 
-export const getPokemons = () => fetchReq(API_URL + '/' + 'pokemons',{
+export const getBeers = () => fetchReq(API_URL + '/beers',{
     method: 'GET',
     mode: "cors",
-    cache: "default"
+    cache: "default",
+    Authorization: 'Bearer '+ TOKEN
 });
 
-export const getPokemonDetailById = (id) => fetchReq(API_URL + '/' + 'pokemons' + '/' + id,{
+export const getBeerById = (id) => fetchReq(API_URL + '/beers/' + id,{
   method: 'GET',
   mode: "cors",
-  cache: "default"
+  cache: "default",
+  Authorization: 'Bearer '+ TOKEN
+
 });
 
-export const getUsers = () => fetchReq(API_URL + '/' + 'users',{
+export const getUsers = () => fetchReq(API_URL + '/users',{
   method: 'GET',
   mode: "cors",
-  cache: "default"
+  cache: "default",
+  Authorization: 'Bearer '+ TOKEN
 });
 
-export const getUserTeam = (id) => fetchReq(API_URL + '/' + 'users' + '/' + id + '/' + 'team',{
+export const getOrders = () => fetchReq(API_URL + '/orders',{
   method: 'GET',
   mode: "cors",
-  cache: "default"
+  cache: "default",
+  Authorization: 'Bearer '+ TOKEN
 });
+
 /*
 export const getSpecificNotes = (id) => fetchReq(API_URL + '/' + id,{
   method: 'GET',

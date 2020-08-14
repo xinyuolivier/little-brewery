@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import {getOrders} from '@/api/api';
+
 export default {
     data() {
         return {
@@ -35,16 +37,11 @@ export default {
         }
     },
     beforeMount(){
-        axios.get('/api/orders/').then(response => this.orders = response.data)
+
+        getOrders().then(response => this.orders = response)
     },
     methods: {
-        deliver(index) {
-            let order = this.orders[index]
-            axios.patch(`/api/orders/${order.id}/deliver`).then(response => {
-                this.orders[index].is_delivered = 1
-                this.$forceUpdate()
-            })
-        }
+        
     }
 }
 </script>

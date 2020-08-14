@@ -9,14 +9,14 @@ class BeerController extends Controller
 {
     public function index()
         {
-            return response()->json(Beer::all(),200);
+            return response()->json(Beer::all(),200);//à modifier chargement progressive
         }
 
         public function store(Request $request)
         {
-            $product = Beer::create([
+            $beer = Beer::create([
                 'beername' => $request->beername,
-                'breweryid' => $request->breweryid,
+                'brewery_id' => $request->breweryid,
                 'flavor' => $request->flavor,
                 'color' => $request->color,
                 'price' => $request->price,
@@ -65,7 +65,7 @@ class BeerController extends Controller
 
             return response()->json([
                 'status' => $status,
-                'message' => $status ? 'Quantity Added!' : 'Error Adding Product Quantity'
+                'message' => $status ? 'Quantity Updated!' : 'Error Updating Product Quantity'
             ]);
         }
 

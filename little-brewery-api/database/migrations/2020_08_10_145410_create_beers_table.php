@@ -16,7 +16,7 @@ class CreateBeersTable extends Migration
         Schema::create('beers', function (Blueprint $table) {
             $table->id();
             $table->string('beername');
-            $table->unsignedBigInteger('breweryid');
+            $table->unsignedBigInteger('brewery_id');
             $table->string('flavor');
             $table->string('color');
             $table->string('packaging');
@@ -25,7 +25,7 @@ class CreateBeersTable extends Migration
             $table->integer('quantity');
             $table->timestamps();
 
-            $table->foreign('breweryid')->references('id')->on('breweries');
+            $table->foreign('brewery_id')->references('id')->on('breweries');
         });
     }
 

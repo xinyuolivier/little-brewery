@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import {getBeerById} from '@/api/api';
     export default {
         props : ['pid'],
         data(){
@@ -46,16 +47,12 @@
             }
         },
         mounted() {
-            this.isLoggedIn = localStorage.getItem('bigStore.jwt') != null
+            this.isLoggedIn = true; 
         },
         beforeMount() {
-            axios.get(`/api/products/${this.pid}`).then(response => this.product = response.data)
+            getBeerById(this.pid).then(response => this.product = response)
 
-            if (localStorage.getItem('bigStore.jwt') != null) {
-                this.user = JSON.parse(localStorage.getItem('bigStore.user'))
-                axios.defaults.headers.common['Content-Type'] = 'application/json'
-                axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('bigStore.jwt')
-            }
+            
         },
         methods : {
             login() {
@@ -67,14 +64,12 @@
             placeOrder(e) {
                 e.preventDefault()
 
-                let address = this.address
-                let product_id = this.product.id
-                let quantity = this.quantity
-
-                axios.post('api/orders/', {address, quantity, product_id})
-                     .then(response => this.$router.push('/confirmation'))
+                //let address = this.address
+                //let product_id = this.product.id
+                //let quantity = this.quantity
+                console.log('Post orders')
             },
-            checkUnits(e){
+            checkUnits(){
                 if (this.quantity > this.product.units) {
                     this.quantity = this.product.units
                 }

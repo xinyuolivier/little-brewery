@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Beer extends Model
 {
     protected $fillable = [
-        'beername', 'breweryid', 'flavor','color','packaging', 'image', 'price', 'quantity',
+        'beername', 'brewery_id', 'flavor','color','packaging', 'image', 'price', 'quantity',
     ];
 
-    public function orders(){
+    public function brewery(){
+        return $this->belongsTo(Brewery::class);
+    }
+
+    public function order(){
         return $this->hasMany(Order::class);
     }
 }

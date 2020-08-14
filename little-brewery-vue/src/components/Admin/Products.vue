@@ -28,6 +28,7 @@
 </template>
 
 <script>
+    import {getBeers} from '@/api/api';
     import Modal from './ProductModal'
 
     export default {
@@ -40,7 +41,8 @@
         },
         components: {Modal},
         beforeMount() {
-            axios.get('/api/products/').then(response => this.products = response.data)
+
+            getBeers().then(response => this.products = response)
         },
         methods: {
             newProduct() {
@@ -55,26 +57,24 @@
             endEditing(product) {
                 this.editingItem = null
 
-                let index = this.products.indexOf(product)
-                let name = product.name
-                let units = product.units
-                let price = product.price
-                let description = product.description
+                //let index = this.products.indexOf(product)
+                //let name = product.name
+                //let units = product.units
+                //let price = product.price
+                //let description = product.description
 
-                axios.put(`/api/products/${product.id}`, {name, units, price, description})
-                     .then(response => this.products[index] = product)
+                console.log( 'put to /api/products/${product.id} ' + product.id);
             },
             addProduct(product) {
                 this.addingProduct = null
 
                 let name = product.name
-                let units = product.units
-                let price = product.price
-                let description = product.description
-                let image = product.image 
+                //let units = product.units
+                //let price = product.price
+                //let description = product.description
+               // let image = product.image 
 
-                axios.post("/api/products/", {name, units, price, description, image})
-                     .then(response => this.products.push(product))
+                console.log( 'post to /api/products ' + name);
             }
         }
     }

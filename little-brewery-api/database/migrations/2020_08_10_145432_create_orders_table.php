@@ -16,16 +16,16 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('orderid');
-            $table->unsignedBigInteger('beerid');
-            $table->unsignedBigInteger('merchantid'); 
-            $table->unsignedBigInteger('breweryid');
+            $table->unsignedBigInteger('beer_id');
+            $table->unsignedBigInteger('user_id'); 
+            $table->unsignedBigInteger('brewery_id');
             $table->unsignedInteger('quantity')->default(1);
             $table->boolean('delivered')->default(false);
             $table->timestamps();
 
-            $table->foreign('beerid')->references('id')->on('beers');
-            $table->foreign('merchantid')->references('id')->on('users');
-            $table->foreign('breweryid')->references('id')->on('breweries');
+            $table->foreign('beer_id')->references('id')->on('beers');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('brewery_id')->references('id')->on('breweries');
             
         });
     }

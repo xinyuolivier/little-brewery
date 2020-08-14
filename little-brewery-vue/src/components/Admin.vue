@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import Main from '../components/admin/Main'
-import Users from '../components/admin/Users'
-import Products from '../components/admin/Products'
-import Orders from '../components/admin/Orders'
+import Main from '../components/Admin/Main'
+import Users from '../components/Admin/Users'
+import Products from '../components/Admin/Products'
+import Orders from '../components/Admin/Orders'
 
 export default {
     data() {
@@ -39,9 +39,7 @@ export default {
     },
     beforeMount() {
         this.setComponent(this.$route.params.page)
-        this.user = JSON.parse(localStorage.getItem('bigStore.  d fuser'))
-        axios.defaults.headers.common['Content-Type'] = 'application/json'
-        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('bigStore.jwt')
+        
     },
     methods: {
         setComponent(value) {

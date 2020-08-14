@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'orderid', 'beerid', 'merchantid', 'breweryid', 'quantity', 'unitprice', 'delivered'
+        'orderid', 'beer_id', 'user_id', 'brewery_id', 'quantity', 'unitprice', 'delivered'
     ];
 
     public function user()
         {
-            return $this->belongsTo(User::class, 'id');
+            return $this->belongsTo(User::class);
         }
 
     public function beer()
         {
-            return $this->belongsTo(Beer::class, 'id');
+            return $this->belongsTo(Beer::class);
         }
 }

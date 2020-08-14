@@ -1,14 +1,14 @@
 <template>
         <div class="row">
             <div class="col-md-4 product-box d-flex align-content-center justify-content-center flex-wrap big-text">
-                <a href='/admin/orders'>Orders ({{orders.length}})</a>
+                <a href='/Admin/Orders'>Orders ({{orders.length}})</a>
             </div>
             <hr>
             <div class="col-md-4 product-box d-flex align-content-center justify-content-center flex-wrap big-text">
-                <a href='/admin/products'>Products ({{products.length}})</a>
+                <a href='/Admin/Products'>Products ({{products.length}})</a>
             </div>
             <div class="col-md-4 product-box d-flex align-content-center justify-content-center flex-wrap big-text">
-                <a href='/admin/users'>Users ({{users.length}})</a>
+                <a href='/Admin/Users'>Users ({{users.length}})</a>
             </div>
         </div>
 </template>
@@ -22,11 +22,6 @@
                 products : [],
                 users : []
             }
-        },
-        mounted() {
-            axios.get('/api/users/').then(response => this.users = response.data)
-            axios.get('/api/products/').then(response => this.products = response.data)
-            axios.get('/api/orders/').then(response => this.orders = response.data)
         }
     }
 </script>

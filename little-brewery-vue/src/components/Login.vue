@@ -45,25 +45,10 @@
                 handleSubmit(e) {
                     e.preventDefault()
                     if (this.password.length > 0) {
-                        let email = this.email
-                        let password = this.password
-
-                        axios.post('api/login', {email, password}).then(response => {
-                            let user = response.data.user
-                            let is_admin = user.is_admin
-
-                            localStorage.setItem('bigStore.user', JSON.stringify(user))
-                            localStorage.setItem('bigStore.jwt', response.data.token)
-
-                            if (localStorage.getItem('bigStore.jwt') != null) {
-                                this.$emit('loggedIn')
-                                if (this.$route.params.nextUrl != null) {
-                                    this.$router.push(this.$route.params.nextUrl)
-                                } else {
-                                    this.$router.push((is_admin == 1 ? 'admin' : 'dashboard'))
-                                }
-                            }
-                        });
+                        let email = this.email;
+                        let password = this.password;
+                        console.log('post login ' + email +' ' + password);
+                        
                     }
                 }
             }

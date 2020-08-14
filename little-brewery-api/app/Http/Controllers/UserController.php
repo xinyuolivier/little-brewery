@@ -23,7 +23,7 @@ class UserController extends Controller
                 $status = 200;
                 $response = [
                     'user' => Auth::user(),
-                    'token' => Auth::user()->createToken('littleBrewery')->accessToken,
+                    'token' => Auth::user()->createToken('authToken')->accessToken,
                 ];
             }
 
@@ -35,7 +35,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 'firstname' => 'required|max:20',
                 'lastname' =>'required|max:20',
-                'role' =>'required',
+                'role' =>'required|in:"seller", "buyer"',
                 'address' => 'nullable',
                 'city' => 'nullable',
                 'mobile' =>'nullable',
@@ -48,7 +48,8 @@ class UserController extends Controller
                 return response()->json(['error' => $validator->errors()], 401);
             }
 
-            $data = $request->only(['name', 'email', 'password']);
+            $data = $request->only(['firstname', 'lastname', 'email', 'password', 'role', 'address',
+                                    'city', 'mobile']);
             $data['password'] = bcrypt($data['password']);
 
             $user = User::create($data);
@@ -56,9 +57,20 @@ class UserController extends Controller
 
             return response()->json([
                 'user' => $user,
-                'token' => $user->createToken('littleBrewery')->accessToken,
+                'token' => $user->createToken('authToken')->accessToken,
             ]);
         }
+
+    public function update(Request $request, User $user){
+        $status = $user->update(
+            $request->only(['firstname', 'lastname', 'email', 'password', 'address', 'city', 'mobile'])
+        );
+
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'User Updated!' : 'Error Updating User'
+        ]);
+    }
 
     public function show(User $user)
         {

@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import {getUsers} from '@/api/api';
+
 export default {
     data() {
         return {
@@ -31,7 +33,7 @@ export default {
         }
     },
     beforeMount() {
-        axios.get('/api/users/').then(response => this.users = response.data)
+        getUsers().then(response => this.users = response)
     }
 }
 </script>

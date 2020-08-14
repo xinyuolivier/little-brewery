@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('login', 'UserController@login');
     Route::post('register', 'UserController@register');
     Route::get('/beers', 'BeerController@index');
-    Route::post('/upload-file', 'BeerController@uploadFile');
+    Route::post('/upload-file', 'BeerController@uploadFile');//not tested
     Route::get('/beers/{beer}', 'BeerController@show');
 
     Route::group(['middleware' => 'auth:api'], function(){
