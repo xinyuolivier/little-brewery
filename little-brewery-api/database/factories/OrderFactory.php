@@ -10,8 +10,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Order::class, function (Faker $faker) {
     return [
-        'orderid' => $faker->unique(),
-        'breweryid' => Brewery::inRandomOrder()->value('id'),
+        'bill' => $faker->unique(),
+        'brewery_id' => Brewery::inRandomOrder()->value('id'),
         
     ];
 });

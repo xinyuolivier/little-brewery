@@ -15,12 +15,12 @@
                 <tbody>
                     <tr v-for="(order,index) in orders" :key="index">
                         <td>{{index+1}}</td>
-                        <td v-html="order.product.name"></td>
+                        <td v-html="order.beer.name"></td>
                         <td>{{order.quantity}}</td>
-                        <td>{{order.quantity * order.product.price}}</td>
-                        <td>{{order.address}}</td>
-                        <td>{{order.is_delivered == 1? "Yes" : "No"}}</td>
-                        <td v-if="order.is_delivered == 0"><button class="btn btn-success" @click="deliver(index)">Deliver</button></td>
+                        <td>{{order.quantity * order.beer.price}}</td>
+                        <td>{{order.created_at}}</td>
+                        <td>{{order.delivered == 1? "Yes" : "No"}}</td>
+                        <td v-if="order.delivered == 0"><button class="btn btn-success" @click="deliver(index)">Deliver</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {getOrders} from '@/api/api';
+import { axiosGetPrivate, axiosPatch} from '@/api/api';
 
 export default {
     data() {
@@ -37,11 +37,26 @@ export default {
         }
     },
     beforeMount(){
-
-        getOrders().then(response => this.orders = response)
+       
+        this.user = JSON.parse(localStorage.getItem('brewery.user'))
+        this.token = localStorage.getItem('brewery.jwt');
+        
+        axiosGetPrivate(`/orders`, this.token)
+                .then(data => {
+                    this.orders = data;
+                    console.log(data)
+                    });
     },
     methods: {
-        
+        deliver(index) {
+            let order = this.orders[index];
+            axiosPatch(`/orders/${order.id}/deliver`, this.token)
+                .then(data => {
+                    console.log(data);
+                    this.orders[index].delivered = 1;
+                    this.$forceUpdate();
+                })
+        }
     }
 }
 </script>

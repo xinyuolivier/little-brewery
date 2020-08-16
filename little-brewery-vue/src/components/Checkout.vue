@@ -5,7 +5,7 @@
                     <div class="order-box">
                         <img :src="product.image" :alt="product.name">
                         <h2 class="title" v-html="product.name"></h2>
-                        <p class="small-text text-muted float-left">$ {{product.price}}</p>
+                        <p class="small-text text-muted float-left">€ {{product.price}}</p>
                         <p class="small-text text-muted float-right">Available Units: {{product.units}}</p>
                         <br>
                         <hr>
@@ -35,7 +35,9 @@
 </template>
 
 <script>
-import {getBeerById} from '@/api/api';
+import {axiosGet, axiosPostPrivate} from '@/api/api';
+import { uuid } from 'vue-uuid'; 
+
     export default {
         props : ['pid'],
         data(){
@@ -47,27 +49,47 @@ import {getBeerById} from '@/api/api';
             }
         },
         mounted() {
-            this.isLoggedIn = true; 
+            this.isLoggedIn = localStorage.getItem('brewery.jwt') != null; 
         },
         beforeMount() {
-            getBeerById(this.pid).then(response => this.product = response)
-
+        
+            axiosGet("/beers/" + this.pid).then(data => {
+                this.product = data;
+            });
+            
+            if(localStorage.getItem('brewery.jwt') != null){
+                this.user = JSON.parse(localStorage.getItem('brewery.user'));
+                this.token = localStorage.getItem('brewery.jwt')
+            }
             
         },
         methods : {
             login() {
                 this.$router.push({name: 'login', params: {nextUrl: this.$route.fullPath}})
             },
+
             register() {
                 this.$router.push({name: 'register', params: {nextUrl: this.$route.fullPath}})
             },
+
             placeOrder(e) {
                 e.preventDefault()
-
-                //let address = this.address
-                //let product_id = this.product.id
-                //let quantity = this.quantity
-                console.log('Post orders')
+                let body = {
+                    bill: uuid.v4(),
+                    beer_id: this.product.id,
+                    user_id: this.user.id,
+                    brewery_id: this.product.brewery_id,
+                    quantity: this.quantity,
+                    unitprice: this.product.price,
+                    delivered: false
+                };
+                //console.log(body);
+               
+                axiosPostPrivate('/orders', body, this.token)
+                .then(response => {
+                    console.log(response);
+                    this.$router.push('/confirmation');
+                    });
             },
             checkUnits(){
                 if (this.quantity > this.product.units) {
@@ -79,7 +101,7 @@ import {getBeerById} from '@/api/api';
 </script>
 
 <style scoped>
-.small-text { font-size: 18px; }
-.order-box { border: 1px solid #cccccc; padding: 10px 15px; }
-.title { font-size: 36px; }
+    .small-text { font-size: 18px; }
+    .order-box { border: 1px solid #cccccc; padding: 10px 15px; }
+    .title { font-size: 36px; }
 </style>

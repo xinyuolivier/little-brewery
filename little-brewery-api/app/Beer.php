@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Beer extends Model
 {
     protected $fillable = [
-        'beername', 'brewery_id', 'flavor','color','packaging', 'image', 'price', 'quantity',
+        'name', 'brewery_id', 'description', 'flavor','color','packaging', 'image', 'price', 'quantity',
     ];
 
     public function brewery(){

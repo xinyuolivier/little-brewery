@@ -19,13 +19,19 @@ use Illuminate\Support\Facades\Route;
     Route::get('/beers', 'BeerController@index');
     Route::post('/upload-file', 'BeerController@uploadFile');//not tested
     Route::get('/beers/{beer}', 'BeerController@show');
+    Route::get('/breweries', 'BreweryController@index');
+    Route::get('/breweries/{brewery}', 'BreweryController@show');
 
     Route::group(['middleware' => 'auth:api'], function(){
-        Route::get('/users','UserController@index');
-        Route::get('users/{user}','UserController@show');
-        Route::patch('users/{user}','UserController@update');
-        Route::get('users/{user}/orders','UserController@showOrders');
-        Route::patch('orders/{order}/deliver','OrderController@deliverOrder');
+        Route::get('users/{user}/orders', 'UserController@showOrders');
+        Route::patch('users/{user}', 'UserController@update');
+        Route::resource('/users', 'UserController');
+
+        Route::resource('breweries', 'BreweryController');
+
+        Route::patch('orders/{order}/deliver', 'OrderController@deliverOrder');
         Route::resource('/orders', 'OrderController');
+
+        Route::patch('beers/{beer}/units/add', 'BeerController@updateQuantity');
         Route::resource('/beers', 'BeerController')->except(['index','show']);
     });

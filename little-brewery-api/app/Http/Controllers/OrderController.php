@@ -28,9 +28,10 @@ namespace App\Http\Controllers;
         public function store(Request $request)
         {
             $order = Order::create([
+                'bill' => $request->bill,
                 'beer_id' => $request->beer_id,
                 'user_id' => Auth::id(),
-                'brewery_id' => $request->breweryid,
+                'brewery_id' => $request->brewery_id,
                 'quantity' => $request->quantity,
             ]);
 

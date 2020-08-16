@@ -15,8 +15,9 @@ class BeerController extends Controller
         public function store(Request $request)
         {
             $beer = Beer::create([
-                'beername' => $request->beername,
-                'brewery_id' => $request->breweryid,
+                'name' => $request->name,
+                'brewery_id' => $request->brewery_id,
+                'description' => $request->description,
                 'flavor' => $request->flavor,
                 'color' => $request->color,
                 'price' => $request->price,
@@ -48,8 +49,8 @@ class BeerController extends Controller
 
         public function update(Request $request, Beer $beer)
         {
-            $status = $product->update(
-                $request->only(['beername', 'breweryid', 'flavor', 'packaging', 'color', 'price', 'quantity', 'image'])
+            $status = $beer->update(
+                $request->only(['name', 'brewery_id', 'description', 'flavor', 'packaging', 'color', 'price', 'quantity', 'image'])
             );
 
             return response()->json([
@@ -70,9 +71,9 @@ class BeerController extends Controller
         }
 
 
-        public function destroy(Product $product)
+        public function destroy(Beer $beer)
         {
-            $status = $product->delete();
+            $status = $beer->delete();
 
             return response()->json([
                 'status' => $status,

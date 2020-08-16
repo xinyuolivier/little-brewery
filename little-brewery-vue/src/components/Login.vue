@@ -34,23 +34,43 @@
 </template>
 
 <script>
-        export default {
-            data() {
-                return {
-                    email: "",
-                    password: ""
-                }
-            },
-            methods: {
-                handleSubmit(e) {
-                    e.preventDefault()
-                    if (this.password.length > 0) {
-                        let email = this.email;
-                        let password = this.password;
-                        console.log('post login ' + email +' ' + password);
-                        
+import {axiosPost} from '@/api/api';
+
+export default {
+    data() {
+        return {
+            email: "",
+            password: ""
+        }
+    },
+    methods: {
+        handleSubmit(e) {
+            e.preventDefault()
+            if (this.password.length > 0) {
+                let email = this.email;
+                let password = this.password;
+
+                axiosPost('/login', {email, password})
+                .then(data => {
+                    let user = data.user;
+
+                    let is_admin = (user.role == 'admin' ? 1 : 0);
+                    localStorage.setItem('brewery.user', JSON.stringify(user));
+                    localStorage.setItem('brewery.jwt', data.token);
+
+                    if(localStorage.getItem('brewery.jwt') != null){
+                        this.$emit('loggedIn');
+                        if(this.$route.params.nextUrl != null) {
+                            this.$router.push(this.$route.params.nextUrl)
+                        }else{
+                            this.$router.push((is_admin == 1 ? 'admin':'dashboard'));
+                        }
                     }
-                }
+                });
+
+                
             }
         }
+    }
+}
 </script>

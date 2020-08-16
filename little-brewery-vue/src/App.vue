@@ -23,7 +23,7 @@
           </div>
       </nav>
       <main class="py-4">
-          <router-view ></router-view>
+          <router-view @loggedIn="change"></router-view>
       </main>
   </div>
 </template>
@@ -36,20 +36,37 @@ export default {
   },
   data(){
       return{
-          isLoggedIn: false,
+          name: null,
+          user_type: 0,
+          isLoggedIn: localStorage.getItem('brewery.jwt') != null,
+      }
+  },
+  mounted() {
+      console.log('mounted');
+      this.setDefaults();
+  },
+  methods: {
+      setDefaults() {
+          if(this.isLoggedIn){
+              let user = JSON.parse(localStorage.getItem("brewery.user"));
+              this.name = user.name;
+              this.user_type = user.is_admin;
+          }
+        console.log('isLoggedIn: ' + this.isLoggedIn);
+        console.log('jwt: ' + localStorage.getItem('brewery.jwt'));
+        console.log ('user_type: ' + this.user_type);
+      },
+      change(){
+          this.isLoggedIn = localStorage.getItem('brewery.jwt') != null;
+          this.setDefaults();
+      },
+      logout(){
+          localStorage.removeItem('brewery.jwt');
+          localStorage.removeItem('brewery.user');
+          this.change();
+          this.$route.push('/');
       }
   }
 }
 </script>
 
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

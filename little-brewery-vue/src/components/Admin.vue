@@ -39,6 +39,8 @@ export default {
     },
     beforeMount() {
         this.setComponent(this.$route.params.page)
+        this.user = JSON.parse(localStorage.getItem('brewery.user'))
+        this.token = localStorage.getItem('brewery.jwt');
         
     },
     methods: {

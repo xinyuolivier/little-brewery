@@ -7,10 +7,11 @@ use App\Brewery;
 use Faker\Generator as Faker;
 
 $factory->define(Beer::class, function (Faker $faker) {
-    $beername = $faker->unique()->word;
+    $name = $faker->unique()->word;
     return [
-        'beername' => $beername,
-        'breweryid' => Brewery::inRandomOrder()->value('id'),
+        'name' => $name,
+        'description' => $faker->sentence,
+        'brewery_id' => Brewery::inRandomOrder()->value('id'),
         'flavor' => $faker->randomElement(['fruité & charnu', 'fruité & frais', 
                                           'fruité & léger', 'puissant avec du potentiel',
                                           'riche & puissant', 'riche & rond']),
@@ -18,7 +19,7 @@ $factory->define(Beer::class, function (Faker $faker) {
         'packaging' => $faker->randomElement(['bouteille', 'fût', 'tireuse']),
         'quantity' => $faker->randomDigit,
         'price' => $faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 100),
-        'image' => $beername.'.png',
+        'image' => $name.'.png',
         
     ];
 });

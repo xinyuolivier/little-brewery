@@ -8,8 +8,15 @@
                     <div class="modal-body">
                         <slot name="body">
                             Name: <input type="text" v-model="data.name">
-                            Units: <input type="text" v-model="data.units">
+                            Units: <input type="text" v-model="data.quantity">
                             Price: <input type="text" v-model="data.price">
+                            color: <input type="text" v-model="data.color">
+                            flavor: <input type="text" v-model="data.flavor">
+                            packaging: <input type="text" v-model="data.packaging">
+                           
+
+
+
                             <textarea v-model="data.description" placeholder="description"></textarea>
                             <span >
                                 <img :src="data.image" v-show="data.image != null">
@@ -28,6 +35,57 @@
             </div>
         </div>
 </template>
+
+
+<script>
+import {axiosPostFormPrivate} from '@/api/api';
+    export default {
+        props: ['product'],
+        data() {
+            return {
+                attachment: null
+            }
+        },
+        computed: {
+            data: function() {
+                if (this.product != null) {
+                    return this.product
+                }
+                return {
+                    name: "",
+                    quantity: "",
+                    price: "",
+                    description: "",
+                    flavor: "",
+                    color: "",
+                    packaging: "",
+                    image: false
+                }
+            }
+        },
+        methods: {
+            attachFile(event) {
+                this.attachment = event.target.files[0];
+            },
+            uploadFile(event) {
+                if (this.attachment != null) {
+                    console.log(event);
+                    this.token = localStorage.getItem('brewery.jwt');
+                    var formData = new FormData();
+                    formData.append("image", this.attachment)
+                    axiosPostFormPrivate('/upload-file', formData, this.token).then(data =>{
+                        this.product.image = data;
+                        this.$emit('close', this.product)
+                    });
+                    
+                } else {
+                    this.$emit('close', this.product)
+                }
+            }
+        }
+    }
+</script>
+
 
 <style scoped>
 .modal-mask {
@@ -77,43 +135,3 @@
     transform: scale(1.1);
 }
 </style>
-
-<script>
-    export default {
-        props: ['product'],
-        data() {
-            return {
-                attachment: null
-            }
-        },
-        computed: {
-            data: function() {
-                if (this.product != null) {
-                    return this.product
-                }
-                return {
-                    name: "",
-                    units: "",
-                    price: "",
-                    description: "",
-                    image: false
-                }
-            }
-        },
-        methods: {
-            attachFile(event) {
-                this.attachment = event.target.files[0];
-            },
-            uploadFile(event) {
-                if (this.attachment != null) {
-                    
-                    console.log('post to product');
-                    console.log(event);
-                    
-                } else {
-                    this.$emit('close', this.product)
-                }
-            }
-        }
-    }
-</script>

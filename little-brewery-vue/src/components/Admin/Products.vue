@@ -14,9 +14,9 @@
                     <tr v-for="(product,index) in products" :key="index" @dblclick="editingItem = product">
                         <td>{{index+1}}</td>
                         <td v-html="product.name"></td>
-                        <td v-modal="product.units">{{product.units}}</td>
-                        <td v-modal="product.price">{{product.price}}</td>
-                        <td v-modal="product.price">{{product.description}}</td>
+                        <td v-html="product.quantity">{{product.quantity}}</td>
+                        <td v-html="product.price">{{product.price}}</td>
+                        <td v-html="product.description">{{product.description}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-    import {getBeers} from '@/api/api';
+import {axiosGet, axiosPut, axiosPostPrivate} from '@/api/api';
     import Modal from './ProductModal'
 
     export default {
@@ -42,7 +42,11 @@
         components: {Modal},
         beforeMount() {
 
-            getBeers().then(response => this.products = response)
+            this.token = localStorage.getItem('brewery.jwt');
+            axiosGet("/beers").then(data => {
+               this.products = data;
+                console.log(data);
+           });
         },
         methods: {
             newProduct() {
@@ -56,25 +60,51 @@
             },
             endEditing(product) {
                 this.editingItem = null
+//'name', 'brewery_id', 'description', 'flavor','color','packaging', 'image', 'price', 'quantity',
 
-                //let index = this.products.indexOf(product)
-                //let name = product.name
-                //let units = product.units
-                //let price = product.price
-                //let description = product.description
+                let index = this.products.indexOf(product)
+                let body = {
+                    name: this.product.name,
+                    //brewery_id:,
+                    description: product.description,
+                    flavor: product.flavor,
+                    color: product.color,
+                    packaging: product.packaging,
+                    image: product.image,
+                    price: product.price,
+                    quantity: product.quantity,
 
-                console.log( 'put to /api/products/${product.id} ' + product.id);
+                };
+
+
+                axiosPut(`/beers/${product.id}`, body, this.token).then(response => {
+                    console.log(response);
+                    this.products[index] = product;
+                })
+
             },
             addProduct(product) {
                 this.addingProduct = null
 
-                let name = product.name
-                //let units = product.units
-                //let price = product.price
-                //let description = product.description
-               // let image = product.image 
+                let body = {
+                    name: this.product.name,
+                    //brewery_id:,
+                    description: product.description,
+                    flavor: product.flavor,
+                    color: product.color,
+                    packaging: product.packaging,
+                    image: product.image,
+                    price: product.price,
+                    quantity: product.quantity,
 
-                console.log( 'post to /api/products ' + name);
+                };
+
+                
+                axiosPostPrivate(`/beers`, body, this.token).then(response => {
+                    console.log(response);
+                    this.products.push(product);
+                });
+                
             }
         }
     }

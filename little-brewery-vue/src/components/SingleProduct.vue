@@ -2,11 +2,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <img :src="product.image" :alt="product.name">
-                    <h3 class="title" v-html="product.name"></h3>
-                    <p class="text-muted">{{product.description}}</p>
+                    <img :src="product.image" :alt="'Image_' + product.name">
+                    <h2 class="title text-uppercase" v-html="product.name"></h2>
+                    <p class="text-muted font-weight-bold text-capitalize">{{product.color}}: {{product.flavor}}</p>
+                    <p class="text-muted font-italic text-capitalize">{{product.packaging}}</p>
+                    <p class="text-muted text-capitalize">{{product.description}}</p>
                     <h4>
-                        <span class="small-text text-muted float-left">$ {{product.price}}</span>
+                        <span class="small-text text-muted float-left">‎€ {{product.price}}</span>
                         <span class="small-text float-right">Available Quantity: {{product.units}}</span>
                     </h4>
                     <br>
@@ -19,7 +21,7 @@
 
 <script>
 
-import {getBeerById} from '@/api/api';
+import {axiosGet} from '@/api/api';
 
 export default {
     data(){
@@ -28,13 +30,16 @@ export default {
         }
     },
     beforeMount(){
-        let beerId = `${this.$route.params.id}`
-        getBeerById(beerId).then(response => this.product = response)      
+        let beerId = `${this.$route.params.id}`; 
+        
+        axiosGet("/beers/" + beerId).then(data => {
+               this.product = data;
+           })
     }
 }
 </script>
 
 <style scoped>
-.small-text { font-size: 18px; }
-.title { font-size: 36px; }
+    .small-text { font-size: 18px; }
+    .title { font-size: 36px; }
 </style>

@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import {axiosGet, axiosGetPrivate} from '@/api/api';
     export default {
         data() {
             return {
@@ -22,6 +23,26 @@
                 products : [],
                 users : []
             }
+        },
+        beforeMount() {
+        this.user = JSON.parse(localStorage.getItem('brewery.user'))
+        this.token = localStorage.getItem('brewery.jwt');
+        
+    },
+        mounted() {
+            
+            axiosGetPrivate(`/users`, this.token)
+                .then(data => {
+                    this.users = data;
+                    });
+            axiosGet('/beers').then(data => {
+                this.products = data;
+            });
+
+            axiosGetPrivate(`/orders`, this.token)
+                .then(data => {
+                    this.orders = data;
+                    });
         }
     }
 </script>
