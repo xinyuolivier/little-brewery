@@ -51,6 +51,12 @@ class BreweryController extends Controller
         return response()->json($brewery,200);
     }
 
+    public function showBeers(Brewery $brewery)
+    {
+        return response()->json($brewery->beer()->get());
+        //return response()->json($user->orders()->with(['beer'])->get());
+    }
+
     /**
      * Update the specified resource in storage.
      *

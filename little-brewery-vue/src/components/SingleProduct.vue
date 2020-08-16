@@ -2,7 +2,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <img :src="product.image" :alt="'Image_' + product.name">
+
+                    <img :src="product.image" @error="product.image='/bieers/default.png'" :alt="product.name" class="img-fluid">
+                   
                     <h2 class="title text-uppercase" v-html="product.name"></h2>
                     <p class="text-muted font-weight-bold text-capitalize">{{product.color}}: {{product.flavor}}</p>
                     <p class="text-muted font-italic text-capitalize">{{product.packaging}}</p>

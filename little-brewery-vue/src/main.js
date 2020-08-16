@@ -2,8 +2,12 @@ import Vue from "vue";
 import VueRouter from 'vue-router';
 import store from "./store";
 
+
+
 import App from "./App.vue";
 import Home from './components/Home';
+import Brewery from './components/Brewery';
+import Brewers from './components/Brewers';
 import Login from './components/Login';
 import Register from './components/Register';
 import SingleProduct from './components/SingleProduct';
@@ -31,6 +35,16 @@ const router = new VueRouter({
             path: '/',
             name: 'home',
             component: Home
+        },
+        {
+            path: '/brewers/:id',
+            name: 'brewery',
+            component: Brewery
+        },
+        {
+            path: '/brewers',
+            name: 'brewers',
+            component: Brewers
         },
         {
             path: '/login',

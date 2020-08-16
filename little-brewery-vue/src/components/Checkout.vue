@@ -2,14 +2,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <div class="order-box">
-                        <img :src="product.image" :alt="product.name">
-                        <h2 class="title" v-html="product.name"></h2>
-                        <p class="small-text text-muted float-left">€ {{product.price}}</p>
-                        <p class="small-text text-muted float-right">Available Units: {{product.units}}</p>
+                    
+                    <div class="order-box" v-for="(order,index) in cart" :key="index">
+                        <img :src="products[order.beerid].image" :alt="products[order.beerid].name">
+                        <h2 class="title" v-html="products[order.beerid].name"></h2>
+                        <p class="small-text text-muted float-left">€ {{products[order.beerid].price}}</p>
+                        <p class="small-text text-muted float-right">Available Units: {{products[order.beerid].units}}</p>
                         <br>
                         <hr>
-                        <label class="row"><span class="col-md-2 float-left">Quantity: </span><input type="number" name="units" min="1" :max="product.units" class="col-md-2 float-left" v-model="quantity" @change="checkUnits"></label>
+                        <label class="row"><span class="col-md-2 float-left">Quantity: </span><input type="number" name="units" min="1" :max="products[order.beerid].units" class="col-md-2 float-left" v-model="quantity" @change="checkUnits"></label>
                     </div>
                     <br>
                     <div>
@@ -39,22 +40,24 @@ import {axiosGet, axiosPostPrivate} from '@/api/api';
 import { uuid } from 'vue-uuid'; 
 
     export default {
-        props : ['pid'],
+       // props : ['pid'],
         data(){
             return {
                 address : "",
                 quantity : 1,
                 isLoggedIn : null,
-                product : []
+                product : [],
+                cart:[],
             }
         },
         mounted() {
             this.isLoggedIn = localStorage.getItem('brewery.jwt') != null; 
+            this.cart = localStorage.getItem('brewery.cart');
         },
         beforeMount() {
         
-            axiosGet("/beers/" + this.pid).then(data => {
-                this.product = data;
+            axiosGet("/beers").then(data => {
+                this.products = data;
             });
             
             if(localStorage.getItem('brewery.jwt') != null){

@@ -1,15 +1,21 @@
 <template>
     <div>
+        <Banner />
+        <!--
         <div class="container-fluid hero-section d-flex align-content-center justify-content-center flex-wrap ml-auto">
             <h2 class="title">Welcome to Little brewery</h2>
+            
         </div>
+        -->
+        <Beers :beers="beers" />
+        <!--
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-4 product-box" v-for="(beer,index) in beers" :key="index">
                             <router-link :to="{ path: '/beers/'+ beer.id}">
-                                <img :src="beer.image" :alt="beer.name">
+                                <img :src="beer.image" @error="beer.image='/beers/default.png'" :alt="beer.name" class="img-fluid">
                                 <h5><span v-html="beer.name"></span>
                                     <span class="small-text text-muted float-right">{{beer.price}} €</span>
                                 </h5>
@@ -20,13 +26,21 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 </template>
 
 <script>
 //import axios from 'axios'
+import Beers from "./Beers";
 import {axiosGet} from '@/api/api';
+import Banner from "./Banner.vue";
+
     export default {
+        components: {
+            Banner,
+            Beers
+        },
         data(){
             return {
                 beers : []
